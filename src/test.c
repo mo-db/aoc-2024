@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
-    List* arglist = list_create();
+    List *arglist = list_create();
     printf("List empty: %d\n", list_empty(arglist));
     for (int i = 1; i < argc; i++) {
         /* if (!list_prepend(arglist, argv[i])) { */
