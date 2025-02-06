@@ -1,62 +1,59 @@
-#include "str-list.h"
+#include "int_list.h"
 #include <stdlib.h>
-#include <string.h>
 #include <stdio.h>
 #include <assert.h>
 
 typedef struct node {
-    char *data;
+    int data;
     struct node *next;
-} Node;
+} INT_NODE;
 
-typedef struct list{
-    Node *head;
+typedef struct list {
+    INT_NODE *head;
     int count;
-} List;
+} INT_LIST;
 
-List *list_create()
+INT_LIST *int_list_create()
 {
-    List *list = malloc(sizeof(List));
-    assert(list != NULL);
-    list->head = NULL;
-    list->count = 0;
-    return list;
+    INT_LIST *int_list = malloc(sizeof(INT_LIST));
+    assert(int_list != NULL);
+    int_list->head = NULL;
+    int_list->count = 0;
+    return int_list;
 }
 
-static void _node_destroy(Node *node)
+static void _node_destroy(INT_NODE *node)
 {
     if (node->next != NULL) { 
         _node_destroy(node->next);
     }
-    printf("node: %s\n", node->data);
-    free(node->data);
     free(node);
 }
 
-void list_destroy(List *list)
+void int_list_destroy(INT_LIST *int_list)
 {
-    assert(list != NULL);
-    assert(list->head != NULL);
-    _node_destroy(list->head);
-    free(list);
+    assert(int_list != NULL);
+    assert(int_list->head != NULL);
+    _node_destroy(int_list->head);
+    free(int_list);
 }
 
-void list_print(List *list)
+void int_list_print(INT_LIST *list)
 {
-    Node *current = list->head;
+    INT_NODE *current = list->head;
     while (current) {
-        printf("%s\n", current->data);
+        printf("%d\n", current->data);
         current = current->next;
     }
 }
 
-int list_count(List *list)
+int int_list_count(INT_LIST *list)
 {
     assert(list != NULL);
     return list->count;
 }
 
-int list_empty(List *list)
+int int_list_empty(INT_LIST *list)
 {
     assert(list != NULL);
     if (list->head == NULL)
@@ -66,20 +63,19 @@ int list_empty(List *list)
 }
 
 // node specific functions
-int list_append(List *list, char *data)
+int int_list_append(INT_LIST *list, int data)
 {
     assert(list != NULL);
-    assert(data != NULL);
 
-    Node *new_node = malloc(sizeof(Node));
+    INT_NODE *new_node = malloc(sizeof(INT_NODE));
     if (!new_node) { return 0; }
-    new_node->data = strdup(data);
+    new_node->data = data;
     new_node->next = NULL;
 
     if (list->head == NULL) {
         list->head = new_node;
     } else {
-        Node *current = list->head;
+        INT_NODE *current = list->head;
         for (;;) {
             if (current->next == NULL) {
                 current->next = new_node;
@@ -93,14 +89,13 @@ int list_append(List *list, char *data)
     return 1;
 }
 
-int list_prepend(List *list, char *data)
+int int_list_prepend_char(INT_LIST *list, int data)
 {
     assert(list != NULL);
-    assert(data != NULL);
-    Node *new_node = malloc(sizeof(Node));
+    INT_NODE *new_node = malloc(sizeof(INT_NODE));
     if (!new_node) { return 0; }
     // setting to NULL to avoid mem errors
-    new_node->data = strdup(data);
+    new_node->data = data;
     new_node->next = NULL;
     // head gets address of new_node, new_node->next gets address of prev node
     new_node->next = list->head;
