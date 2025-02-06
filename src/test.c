@@ -2,7 +2,6 @@
 #include "util.h"
 #include "int_list.h"
 #include "str_list.h"
-#include <sdl2/sdl.h>
 
 #define FILE_NAME_MAX 500
 
@@ -36,13 +35,14 @@ int main(int argc, char *argv[])
     str_copy(target, test);
     printf("target: %s\n", target);
 
-    FILE* fp = fopen("aoc-01-input", "r");
+    FILE* fp = fopen("./src/aoc-01-input", "r");
     assert(fp);
 
     char *linep = NULL;
     size_t linecapp = 0;
     getline(&linep, &linecapp, fp);
     printf("line: %s\n", linep);
+    free(linep);
     fclose(fp);
 
     return 0;
