@@ -5,6 +5,7 @@
 
 #define FILE_NAME_MAX 500
 
+// hi
 int main(int argc, char *argv[])
 {
     STR_LIST *arglist = str_list_create();
