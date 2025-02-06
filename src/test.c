@@ -1,3 +1,4 @@
+#include "util.h"
 #include "int_list.h"
 #include "str_list.h"
 #include <stdio.h>
@@ -26,5 +27,24 @@ int main(int argc, char *argv[])
     printf("put filename: ");
     scanf("%s", filename);
     printf("%s\n", filename);
+
+    char blub[] = "BLUB";
+    char* file = filename;
+    char* test = blub;
+    char* testit = NULL;
+
+    int count = 0;
+    while (*test) { 
+        count++;
+        *test++ = *file++;
+    }
+
+    if (*test == '\0') { 
+        printf("test is NULL\n");
+        printf("test is %s\n", blub);
+    } else {
+        printf("test is %c, count: %d\n", *test, count);
+    }
+
     return 0;
 }
