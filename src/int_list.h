@@ -1,6 +1,8 @@
 #ifndef INT_LIST_H
 #define INT_LIST_H
 
+#include "indefs.h"
+
 // Opaque pointer to the int_list structure
 typedef struct list INT_LIST;
 

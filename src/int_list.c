@@ -1,7 +1,5 @@
+#include "indefs.h"
 #include "int_list.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <assert.h>
 
 typedef struct node {
     int data;

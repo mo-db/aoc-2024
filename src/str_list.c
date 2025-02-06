@@ -1,8 +1,5 @@
+#include "indefs.h"
 #include "str_list.h"
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <assert.h>
 
 typedef struct node {
     char *data;
@@ -109,4 +106,15 @@ int str_list_prepend(STR_LIST *list, char *data)
     list->head = new_node;
     list->count++;
     return 1;
+}
+
+void apply_to_all_nodes(STR_LIST *list, char *data,
+        int (*f)(char *target, const char *source))
+{
+    assert(list);
+    STR_NODE* current = list->head;
+    while (current) {
+        (*f)(current->data, data);
+        current = current->next;
+    }
 }

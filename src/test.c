@@ -1,8 +1,8 @@
+#include "indefs.h"
 #include "util.h"
 #include "int_list.h"
 #include "str_list.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include <sdl2/sdl.h>
 
 #define FILE_NAME_MAX 500
 
@@ -15,6 +15,8 @@ int main(int argc, char *argv[])
             str_list_prepend(arglist, argv[i]);
         }
     }
+    apply_to_all_nodes(arglist, "lulu", str_copy_nonull);
+
     printf("List empty: %d\n", str_list_empty(arglist));
     printf("List count: %d\n", str_list_count(arglist));
     str_list_print(arglist);
@@ -33,6 +35,15 @@ int main(int argc, char *argv[])
     char target[] = "blub";
     str_copy(target, test);
     printf("target: %s\n", target);
+
+    FILE* fp = fopen("aoc-01-input", "r");
+    assert(fp);
+
+    char *linep = NULL;
+    size_t linecapp = 0;
+    getline(&linep, &linecapp, fp);
+    printf("line: %s\n", linep);
+    fclose(fp);
 
     return 0;
 }

@@ -1,0 +1,11 @@
+CompileFlags: 
+  Add: [
+    "-Wno-unused"
+    "-I./src
+    "-I/opt/homebrew/opt/llvm/include",
+    "-I/opt/homebrew/Cellar/sdl2/2.30.10/include/SDL2",
+    "-I/opt/homebrew/Cellar/sdl2_image/2.8.3/include/SDL2"
+    # "-I/usr/local/include",
+  ]
+Diagnostics:
+  UnusedIncludes: None

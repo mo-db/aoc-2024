@@ -1,6 +1,8 @@
 #ifndef STR_LIST_H
 #define STR_LIST_H
 
+#include "indefs.h"
+
 // Opaque pointer to the list structure
 typedef struct list STR_LIST;
 
@@ -24,5 +26,8 @@ int str_list_append(STR_LIST *list, char *data);
 
 // Add an element to the head of the list
 int str_list_prepend(STR_LIST *list, char *data);
+
+void apply_to_all_nodes(STR_LIST *list, char *data,
+        int (*f)(char *target, const char *source));
 
 #endif
