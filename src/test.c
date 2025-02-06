@@ -28,23 +28,11 @@ int main(int argc, char *argv[])
     scanf("%s", filename);
     printf("%s\n", filename);
 
-    char blub[] = "BLUB";
-    char* file = filename;
-    char* test = blub;
-    char* testit = NULL;
+    char* test = filename;
 
-    int count = 0;
-    while (*test) { 
-        count++;
-        *test++ = *file++;
-    }
-
-    if (*test == '\0') { 
-        printf("test is NULL\n");
-        printf("test is %s\n", blub);
-    } else {
-        printf("test is %c, count: %d\n", *test, count);
-    }
+    char target[] = "blub";
+    str_copy(target, test);
+    printf("target: %s\n", target);
 
     return 0;
 }
