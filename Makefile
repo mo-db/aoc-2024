@@ -1,5 +1,5 @@
 ## Blueprint Makefile
-SRC_FILES := test util str_list
+SRC_FILES := sdltest
 SRC_DIR := src
 OBJ_DIR := obj
 BIN_DIR := bin
@@ -9,18 +9,22 @@ EXE := $(BIN_DIR)/a.out
 SRC := $(wildcard $(SRC_DIR)/*.c)
 OBJ := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(SRC_FILES)))
 
-SDL3_CFLAGS := -I/opt/homebrew/Cellar/sdl3/3.2.2/include/SDL3 \
-			   -I/opt/homebrew/Cellar/sdl3_image/3.2.0/include/SDL3
-SDL3_LDFLAGS := -L/opt/homebrew/Cellar/sdl3/3.2.2/lib -lsdl3 \
-				-L/opt/homebrew/Cellar/sdl3_image/3.2.0/lib -lsdl3_image
-SDL2_CFLAGS := -I/opt/homebrew/Cellar/sdl2/2.30.12/include/SDL2 \
-			   -I/opt/homebrew/Cellar/sdl2_image/2.8.4/include/SDL2
-SDL2_LDFLAGS := -L/opt/homebrew/Cellar/sdl2/2.30.12/lib -lsdl2 \
-				-L/opt/homebrew/Cellar/sdl2_image/2.8.4/lib -lsdl2_image
+
+BREW_PREFIX := /opt/homebrew/Cellar
+SDL3_PREFIX := $(BREW_PREFIX)/sdl3/3.2.2
+SDL2_PREFIX := $(BREW_PREFIX)/sdl2/2.30.12
+FFMPEG_PREFIX := $(BREW_PREFIX)/ffmpeg/7.1_4
+
+SDL3_CFLAGS := -I$(SDL3_PREFIX)/include -I$(SDL3_PREFIX)/include
+SDL3_LDFLAGS := -L$(SDL3_PREFIX)/lib -lsdl3 -L$(SDL3_PREFIX)/lib -lsdl3_image
+SDL2_CFLAGS := -I$(SDL2_PREFIX)/include -I$(SDL2_PREFIX)/include
+SDL2_LDFLAGS := -L$(SDL2_PREFIX)/lib -lsdl2 -L$(SDL2_PREFIX)/lib -lsdl2_image
+FFMPEG_CFLAGS := -I$(FFMPEG_PREFIX)/include
+FFMPEG_LDFLAGS := -I$(FFMPEG_PREFIX)/lib -lavcodec
 
 ## for debugging
-CFLAGS := -fsanitize=address -fsanitize=undefined -Wall -Wextra -g -MMD -MP 
-LDFLAGS := -fsanitize=address -fsanitize=undefined 
+CFLAGS := -fsanitize=address -fsanitize=undefined -Wall -Wextra -g -MMD -MP $(SDL3_CFLAGS) $(FFMPEG_CFLAGS)
+LDFLAGS := -fsanitize=address -fsanitize=undefined $(SDL3_LDFLAGS) $(FFMPEG_LDFLAGS)
 
 ## for normal comp
 # CFLAGS := -Wall -Wextra -g -MMD -MP
@@ -54,6 +58,11 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 # Clean for rebuilt - Using implicit variable RM (rm -f)
 clean:
 	@$(RM) -r $(OBJ_DIR) $(BIN_DIR)
+
+upclang:
+    echo "CompileFlags:" > .clangd
+    echo "  Add:" >> .clangd
+    echo "    - $(SDL3_CFLAGS) $(SDL2_CFLAGS) $(FFMPEG_CFLAGS)" >> .clangd
 
 # Make sure directories exist
 $(OBJ_DIR) $(BIN_DIR):

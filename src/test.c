@@ -2,6 +2,10 @@
 #include "util.h"
 #include "int_list.h"
 #include "str_list.h"
+#include <SDL3/sdl.h>
+
+static SDL_Window *window = NULL;
+static SDL_Renderer *renderer = NULL;
 
 #define FILE_NAME_MAX 500
 
