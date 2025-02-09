@@ -1,5 +1,5 @@
 ## Blueprint Makefile
-SRC_FILES := sdltest
+SRC_FILES := aoc_01a
 SRC_DIR := src
 OBJ_DIR := obj
 BIN_DIR := bin
@@ -25,8 +25,8 @@ FFMPEG_CFLAGS := -I$(FFMPEG_PREFIX)/include
 FFMPEG_LDFLAGS := -L$(FFMPEG_PREFIX)/lib -lavcodec
 
 FLAGS := -fsanitize=address -fsanitize=undefined
-CFLAGS := $(FLAGS) -Wall -Wextra -g -MMD -MP $(SDL3_CFLAGS) $(FFMPEG_CFLAGS)
-LDFLAGS := $(FLAGS) $(SDL3_LDFLAGS) $(FFMPEG_LDFLAGS)
+CFLAGS := $(FLAGS) -Wall -Wextra -g -MMD -MP
+LDFLAGS := $(FLAGS) $(SDL3_LDFLAGS)
 
 ## select compiler
 # CC := gcc-14
