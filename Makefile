@@ -1,5 +1,5 @@
 ## Blueprint Makefile
-SRC_FILES := aoc_01a
+SRC_FILES := aoc_02a
 SRC_DIR := src
 OBJ_DIR := obj
 BIN_DIR := bin
@@ -24,9 +24,14 @@ FFMPEG_PREFIX := $(BREW_PREFIX)/ffmpeg/7.1_4
 FFMPEG_CFLAGS := -I$(FFMPEG_PREFIX)/include
 FFMPEG_LDFLAGS := -L$(FFMPEG_PREFIX)/lib -lavcodec
 
+
+PCRE2_PREFIX := $(BREW_PREFIX)/pcre2/10.44
+PCRE2_CFLAGS := -I$(PCRE2_PREFIX)/include
+PCRE2_LDFLAGS := -L$(PCRE2_PREFIX)/lib -lpcre2-8
+
 FLAGS := -fsanitize=address -fsanitize=undefined
-CFLAGS := $(FLAGS) -Wall -Wextra -g -MMD -MP
-LDFLAGS := $(FLAGS) $(SDL3_LDFLAGS)
+CFLAGS := $(FLAGS) -Wall -Wextra -g -MMD -MP 
+LDFLAGS := $(FLAGS)
 
 ## select compiler
 # CC := gcc-14
@@ -61,7 +66,7 @@ clean:
 upclangd:
 	echo "CompileFlags:" > .clangd
 	echo "  Add: [" >> .clangd
-	echo "    $(SRC_DIR), $(SDL3_CFLAGS), $(SDL3_IMG_CFLAGS), $(FFMPEG_CFLAGS)" >> .clangd
+	echo "    $(SRC_DIR), $(SDL3_CFLAGS), $(SDL3_IMG_CFLAGS), $(FFMPEG_CFLAGS), $(PCRE2_CFLAGS)" >> .clangd
 	echo "  ]" >> .clangd
 
 # Make sure directories exist

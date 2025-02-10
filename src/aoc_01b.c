@@ -1,3 +1,4 @@
+/* super bad performance, can be improved much */
 #include "indef.h"
 #include "int_list.h"
 
@@ -68,9 +69,28 @@ int compare(int *left, int *right, int len)
 	return sum;
 }
 
+/* since the arrays are sorted, just iter the left and if find the same */
+/* value in the right add this value to the similarity score until the */
+/* value changes.  */
+int sim_score(int *left, int *right, int len)
+{
+	int sim = 0;
+	for (int i = 0; i < len; i++) {
+		for (int j = 0; j < len; j++) {
+			if (right[j] == left[i]) {
+				while (j < len && right[j] == left[i]) {
+					sim += left[i];
+					j++;
+				}
+			}
+		}
+	}
+	return sim;
+}
+
 int main(int argc, char* argv[])
 {
-	char filename[UINT16_MAX] = "./src/aoc_01_example_input";
+	char filename[UINT16_MAX] = "./src/aoc_01_input";
     if (argc > 1) {
 		strcpy(filename, argv[1]);
     } else {
@@ -95,6 +115,8 @@ int main(int argc, char* argv[])
 
 	print_line(fp);
 	printf("lines: %d\n", lines_n);
+
+	printf("sim: %d\n", sim_score(left, right, lines_n));
 
 	fclose(fp);
     return 0;

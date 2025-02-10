@@ -1,4 +1,4 @@
-#include "indefs.h"
+#include "indef.h"
 #include "util.h"
 
 int str_copy(char* target, const char* source) 
