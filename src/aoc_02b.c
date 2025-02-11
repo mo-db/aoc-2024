@@ -17,19 +17,21 @@ int compare_inc(int a, int b)
 		return 0;
 }
 
-// the maxdepth stands for how many levels can be skipped and still be save
-// can always relate to 3 values, so i need prev
-int is_save(INT_NODE *current, INT_NODE *next, int (*func)(int a, int b),
+// one has to compare a-b and b-c to cover all edge cases
+int is_save(INT_NODE *a, INT_NODE *b, INT_NODE *c, int (*func)(int a, int b),
 		int max_depth)
 {
-	if (next->next) {
+	/* printf("a: %d, b: %d, c: %d\n", a->data, b->data, c->data); */
+	int sv = 0;
+	if (c->next) {
 		// for each unsave level, the recursion forks if there is depth left
-		if (func(current->data, next->data)) {
-			return is_save(next, next->next, func, max_depth);
+		if (func(a->data, b->data) && func(b->data, c->data)) {
+			return is_save(b, c, c->next, func, max_depth);
 		} else if (max_depth > 0) {
 			max_depth--;
-			return is_save(current, next->next, func, max_depth);
-			return is_save(next, next->next, func, max_depth);
+			return is_save(a, b, c->next, func, max_depth) ||
+				is_save(b, c, c->next, func, max_depth) ||
+				is_save(a, c, c->next, func, max_depth);
 		} else {
 			return 0;
 		}
@@ -37,7 +39,7 @@ int is_save(INT_NODE *current, INT_NODE *next, int (*func)(int a, int b),
 		// only if one of the follwing is true the line is save:
 		//  - end of list is reached and compare is true
 		//  - depth is still > 0
-		if (func(current->data, next->data)) {
+		if (func(a->data, b->data) && func(b->data, c->data)) {
 			return 1;
 		} else if (max_depth > 0) {
 			return 1;
@@ -51,10 +53,10 @@ int is_save(INT_NODE *current, INT_NODE *next, int (*func)(int a, int b),
 int process_line(char *line)
 {
 	INT_LIST *levels = int_list_create();
-	INT_NODE *current, *next;
+	INT_NODE *a, *b, *c;
 	int inc_save, dec_save;
 
-	current = next = NULL;
+	a = b = c = NULL;
 	inc_save = dec_save = 0;
 
 	// fill the list
@@ -73,25 +75,31 @@ int process_line(char *line)
 	int_list_prepend(levels, atoi(num));
 	int_list_reverse(levels);
 
-	// handle first two nodes
+	// handle first three nodes and return appropreate values
 	if (int_list_empty(levels)) {
 		int_list_destroy(levels);
 		return 0;
 	}
-	current = levels->head;
-	if (current->next) {
-		next = current->next;
+	a = levels->head;
+	if (a->next) {
+		b = a->next;
+	} else {
+		int_list_destroy(levels);
+		return 1;
+	}
+	if (b->next) {
+		c = b->next;
 	} else {
 		int_list_destroy(levels);
 		return 1;
 	}
 
-	inc_save = is_save(current, next, compare_inc, 1);
-	dec_save = is_save(current, next, compare_dec, 1);
+	// check if the list is save for incrementing, then for decrementing
+	inc_save = is_save(a, b, c, compare_inc, 1);
+	dec_save = is_save(a, b, c, compare_dec, 1);
 
-	/* int_list_print(levels); */
 	int_list_destroy(levels);
-	
+	// if either inc or dec were save return 1
 	return MAX(inc_save, dec_save);
 }
 
