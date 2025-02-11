@@ -1,16 +1,6 @@
 #include "indef.h"
 #include "int_list.h"
 
-typedef struct node {
-    int data;
-    struct node *next;
-} INT_NODE;
-
-typedef struct list {
-    INT_NODE *head;
-    int count;
-} INT_LIST;
-
 INT_LIST *int_list_create()
 {
     INT_LIST *int_list = malloc(sizeof(INT_LIST));

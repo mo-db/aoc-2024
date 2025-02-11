@@ -4,7 +4,15 @@
 #include "indef.h"
 
 // Opaque pointer to the int_list structure
-typedef struct list INT_LIST;
+typedef struct node {
+    int data;
+    struct node *next;
+} INT_NODE;
+
+typedef struct list {
+    INT_NODE *head;
+    int count;
+} INT_LIST;
 
 // Create a new int_list
 INT_LIST *int_list_create();
@@ -29,5 +37,8 @@ int int_list_prepend(INT_LIST *list, int data);
 
 // reverse prepend list, so no append function needed
 void int_list_reverse(INT_LIST *list);
+
+// asdf
+void int_list_remove_node(INT_LIST *list, INT_NODE *node);
 
 #endif
