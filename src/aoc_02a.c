@@ -1,30 +1,29 @@
 #include "indef.h"
 
-// compare 2 values and return their state
-#define INC 1
-#define DEC 2
-#define UNSAVE 0
+// compare 2 values for the given rules
 int compare(int a, int b)
 {
 	if (a > b) {
 		if ((a - b) > 3) {
-			return UNSAVE;
+			return 0;
 		} else {
-			return DEC;
+			return 2; // decreasing
+		}
+	} else if (b > a) {
+		if ((b - a) > 3) {
+			return 0;
+		} else {
+			return 1; // increasing
 		}
 	} else {
-		if ((b - a) > 3) {
-			return UNSAVE;
-		} else {
-			return INC;
-		}
+		return 0;
 	}
 }
 
+// check if lines fulfills the rules for a save line
 int is_save(char *line)
 {
 	int a, b, state;
-	
 	// compare the first two values and set state
 	char *token = strtok(line, " ");
 	if (token == NULL && *token == '\n') {
@@ -38,8 +37,9 @@ int is_save(char *line)
 	} else {
 		b = atoi(token);
 	}
-	if (!(state = compare(a, b)));
-
+	// return if unsave
+	if (!(state = compare(a, b))) { return 0; }
+	// compare every token with the last and return if unsave
 	while ((token = strtok(NULL, " ")) != NULL && *token != '\n') {
 		a = b;
 		b = atoi(token);
@@ -50,10 +50,9 @@ int is_save(char *line)
 	return 1;
 }
 
-
-int main(int argc, char* argv[])
+int main()
 {
-    if (freopen("./src/aoc_02_ex_input", "r", stdin) == NULL)
+    if (freopen("./src/aoc_02_input", "r", stdin) == NULL)
     {
        perror("freopen() failed");
        return 1;
@@ -62,7 +61,15 @@ int main(int argc, char* argv[])
 	size_t size = 0;
 	int count = 0;
 	while (getline(&line, &size, stdin) != -1) {
-		if (is_save(line)) { count++; }
+		char *line_copy = strdup(line); // is_save is destructive
+		if (is_save(line_copy)) { 
+			count++;
+			printf("[%d:save] %s", count, line);
+		} else {
+			printf("[unsave] %s", line);
+		}
+		free(line_copy);
 	}
+	printf("save lines: %d\n", count);
 	return 0;
 }

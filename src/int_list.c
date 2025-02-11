@@ -40,9 +40,10 @@ void int_list_print(INT_LIST *list)
 {
     INT_NODE *current = list->head;
     while (current) {
-        printf("%d\n", current->data);
+        printf("%d ", current->data);
         current = current->next;
     }
+    printf("\n");
 }
 
 int int_list_count(INT_LIST *list)
@@ -87,7 +88,7 @@ int int_list_append(INT_LIST *list, int data)
     return 1;
 }
 
-int int_list_prepend_char(INT_LIST *list, int data)
+int int_list_prepend(INT_LIST *list, int data)
 {
     assert(list != NULL);
     INT_NODE *new_node = malloc(sizeof(INT_NODE));
@@ -100,4 +101,21 @@ int int_list_prepend_char(INT_LIST *list, int data)
     list->head = new_node;
     list->count++;
     return 1;
+}
+
+void int_list_reverse(INT_LIST *list)
+{
+    assert(list != NULL);
+	INT_NODE *current = list->head;
+	INT_NODE *prev = NULL;
+	INT_NODE *temp = NULL;
+	// point nodes to the previous node in the list
+	while (current->next) {
+		temp = current->next;
+		current->next = prev;
+		prev = current;
+		current = temp;
+	}
+	current->next = prev;
+	list->head = current;
 }

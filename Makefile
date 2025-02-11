@@ -1,5 +1,5 @@
 ## Blueprint Makefile
-SRC_FILES := aoc_02a
+SRC_FILES := aoc_02b int_list
 SRC_DIR := src
 OBJ_DIR := obj
 BIN_DIR := bin

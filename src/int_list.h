@@ -1,13 +1,13 @@
 #ifndef INT_LIST_H
 #define INT_LIST_H
 
-#include "indefs.h"
+#include "indef.h"
 
 // Opaque pointer to the int_list structure
 typedef struct list INT_LIST;
 
 // Create a new int_list
-INT_LIST *list_create();
+INT_LIST *int_list_create();
 
 // Destroy a int_list and free its memory
 void int_list_destroy(INT_LIST *list);
@@ -22,9 +22,12 @@ int int_list_count(INT_LIST *list);
 int int_list_empty(INT_LIST *list);
 
 // Add an element to the tail of the int_list
-int int_list_append(INT_LIST *list, int data);
+/* int int_list_append(INT_LIST *list, int data); */
 
 // Add an element to the head of the int_list
 int int_list_prepend(INT_LIST *list, int data);
+
+// reverse prepend list, so no append function needed
+void int_list_reverse(INT_LIST *list);
 
 #endif
